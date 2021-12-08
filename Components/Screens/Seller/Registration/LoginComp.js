@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StoreData } from "../../../../App";
 import {
   StyleSheet,
@@ -23,6 +23,7 @@ import {
 } from "../../../../Firebase/FirebaseConfig";
 
 const LoginComp = ({ navigation }) => {
+  const { getUserData } = useContext(StoreData);
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [BtnLoader, setBtnLoader] = useState(false);
@@ -35,8 +36,7 @@ const LoginComp = ({ navigation }) => {
         // Signed in
         const user = userCredential.user;
         setuserid(user.uid);
-        console.log(user);
-        ToastAndroid.show("Login Sucefully", ToastAndroid.LONG);
+        // console.log(user);
       })
       .then(() => {
         onAuthStateChanged(auth, async (user) => {
@@ -47,15 +47,26 @@ const LoginComp = ({ navigation }) => {
               where("registerUserId", "==", uid)
             );
             const querySnapshot = await getDocs(q);
-            console.log(querySnapshot);
+            // console.log("query console", querySnapshot);
 
             querySnapshot.forEach((doc) => {
-              console.log(doc.id, " => ", doc.data());
+              // console.log(doc.id, " => ", doc.data());
+              getUserData(doc.data());
               if (doc.data().registrationCompleted === true) {
+                ToastAndroid.show("Login Sucefully", ToastAndroid.LONG);
+                navigation.navigate("ResturantmainScreen");
+                // console.log("true condition matched");
+                setBtnLoader(false);
+                setEmail(" ");
+                setPassword(" ");
+              } else {
                 navigation.navigate("ResturantRegistrationForm");
-              } else if (doc.data().registrationCompleted === false) {
-                console.log("go to seller home page");
-                navigation.navigate("ResturantMainScreen");
+                ToastAndroid.show("Login Sucefully", ToastAndroid.LONG);
+                // console.log("go to seller home page");
+                // console.log("another condition matched");
+                setBtnLoader(false);
+                setEmail(" ");
+                setPassword(" ");
               }
             });
           } else {
@@ -68,6 +79,7 @@ const LoginComp = ({ navigation }) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
         setBtnLoader(false);
       });
   }

@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -22,15 +22,18 @@ import {
   uploadBytes,
   getDownloadURL,
   setDoc,
-  doc
+  doc,
 } from "../../../../Firebase/FirebaseConfig";
 import ButtonComp from "../../../ReuseAbleComponents/ButtonComp";
 import DropdownComp from "../../../ReuseAbleComponents/DropdownComp";
 import InputFieldComp from "../../../ReuseAbleComponents/InputFieldComp";
 import * as ImagePicker from "expo-image-picker";
 import { v4 } from "uuid";
+import { StoreData } from "../../../../App";
 
 const RegistrationForm = ({ navigation }) => {
+  const { userLoginData, getUserData } = useContext(StoreData);
+
   /////////////get document Id to replace old data on new
   const [docId, setdocId] = useState("");
   const [resturantName, setresturantName] = useState("");
@@ -40,7 +43,17 @@ const RegistrationForm = ({ navigation }) => {
   /////////////////// ASKING PERMISSION FOR IMAGE
   const [uri, setImage] = useState("");
 
-  console.log(Image);
+  // console.log(Image);
+  const user = auth.currentUser;
+  if (user === null) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/firebase.User
+    navigation.navigate("ResturantLogin");
+    // ...
+  } else if (user && userLoginData.registrationCompleted === true) {
+    // No user is signed in.
+    navigation.navigate("ResturantmainScreen");
+  }
 
   useEffect(() => {
     (async () => {
@@ -125,13 +138,29 @@ const RegistrationForm = ({ navigation }) => {
         lname: loginUserData.lname,
         email: loginUserData.email,
         ResturantImage: url,
-        userid: loginUserData.registerUserId,
+        registerUserId: loginUserData.registerUserId,
         registrationType: "seller",
         registrationCompleted: true,
         resturantName: resturantName,
         resturantArea: resturantArea,
         foodType: foodType,
+        docId: docId,
       });
+      getUserData({
+        fname: loginUserData.fname,
+        lname: loginUserData.lname,
+        email: loginUserData.email,
+        ResturantImage: url,
+        registerUserId: loginUserData.registerUserId,
+        registrationType: "seller",
+        registrationCompleted: true,
+        resturantName: resturantName,
+        resturantArea: resturantArea,
+        foodType: foodType,
+        docId: docId,
+      });
+      navigation.navigate("ResturantmainScreen");
+      console.log("done ho gya ga gorm");
     });
   };
   // console.log();

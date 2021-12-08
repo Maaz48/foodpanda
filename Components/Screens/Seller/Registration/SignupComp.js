@@ -48,10 +48,10 @@ const SignupComp = ({ navigation }) => {
             registrationType: "seller",
           });
           console.log("Document written with ID: ", docRef.id);
-          setfname("");
-          setlname("");
-          setEmail("");
-          setPassword("");
+          setfname(" ");
+          setlname(" ");
+          setEmail(" ");
+          setPassword(" ");
         } catch (e) {
           console.error("Error adding document: ", e);
           setBtnLoader(false);
@@ -63,7 +63,7 @@ const SignupComp = ({ navigation }) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        ToastAndroid.show({ errorMessage }, ToastAndroid.SHORT);
+        ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
         setBtnLoader(false);
         // ..
       });

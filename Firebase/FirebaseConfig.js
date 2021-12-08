@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -15,6 +16,8 @@ import {
   getDocs,
   query,
   where,
+  updateDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import {
   getStorage,
@@ -43,6 +46,7 @@ export {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  signOut,
   db,
   doc,
   setDoc,
@@ -52,6 +56,8 @@ export {
   getDocs,
   query,
   where,
+  updateDoc,
+  onSnapshot,
   storage,
   ref,
   uploadBytes,
