@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -17,6 +17,7 @@ import {
   collection,
   db,
 } from "../../../../Firebase/FirebaseConfig";
+import { ActivityIndicator } from "react-native-paper";
 
 const SignupComp = ({ navigation }) => {
   const [fname, setfname] = useState("");
@@ -31,10 +32,6 @@ const SignupComp = ({ navigation }) => {
         setBtnLoader(true);
         // Signed in
 
-        ToastAndroid.show(
-          "Your Resturant Has Been Registerd",
-          ToastAndroid.LONG
-        );
         const user = userCredential.user;
         // console.log(user.uid);
         let uid = user.uid;
@@ -47,11 +44,16 @@ const SignupComp = ({ navigation }) => {
             registrationCompleted: false,
             registrationType: "seller",
           });
+          ToastAndroid.show(
+            "Your Resturant Has Been Registerd",
+            ToastAndroid.SHORT
+          );
           console.log("Document written with ID: ", docRef.id);
           setfname(" ");
           setlname(" ");
           setEmail(" ");
           setPassword(" ");
+          setBtnLoader(false);
         } catch (e) {
           console.error("Error adding document: ", e);
           setBtnLoader(false);
@@ -68,6 +70,16 @@ const SignupComp = ({ navigation }) => {
         // ..
       });
   }
+
+  useEffect(() => {
+    if (BtnLoader) {
+      <ActivityIndicator
+        style={{ justifyContent: "center", alignItems: "center" }}
+        animating={true}
+        color="red"
+      />;
+    }
+  }, [BtnLoader]);
 
   return (
     <ScrollView

@@ -7,8 +7,9 @@ import {
   ScrollView,
   Image,
   Dimensions,
+  ToastAndroid,
 } from "react-native";
-import { Avatar, Button } from "react-native-paper";
+import { Avatar, Button, ActivityIndicator } from "react-native-paper";
 import {
   auth,
   onAuthStateChanged,
@@ -39,21 +40,24 @@ const RegistrationForm = ({ navigation }) => {
   const [resturantName, setresturantName] = useState("");
   const [resturantArea, setresturantArea] = useState("");
   const [foodType, setfoodType] = useState("");
-
+  const [btnloading, setbtnloading] = useState(false);
   /////////////////// ASKING PERMISSION FOR IMAGE
   const [uri, setImage] = useState("");
-
+  const [activityIndicate, setactivityIndicate] = useState(false);
   // console.log(Image);
   const user = auth.currentUser;
-  if (user === null) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
-    navigation.navigate("ResturantLogin");
-    // ...
-  } else if (user && userLoginData.registrationCompleted === true) {
-    // No user is signed in.
-    navigation.navigate("ResturantmainScreen");
-  }
+
+  useEffect(() => {
+    if (user === null) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      navigation.navigate("ResturantLogin");
+      // ...
+    } else if (user && userLoginData.registrationCompleted === true) {
+      // No user is signed in.
+      navigation.navigate("ResturantmainScreen");
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -67,11 +71,24 @@ const RegistrationForm = ({ navigation }) => {
     })();
   }, []);
 
+  /////////////activity indicator
+  useEffect(() => {
+    if (activityIndicate) {
+      <ActivityIndicator
+        style={{ justifyContent: "center", alignItems: "center" }}
+        animating={true}
+        color="red"
+      />;
+      ToastAndroid.show("Waiting...", ToastAndroid.SHORT);
+    }
+  }, [activityIndicate]);
+
   //////////// get user login data
   const [loginUserData, setloginUserData] = useState("");
 
   ///////Uplaod Image
   const uploadImage = async () => {
+    setbtnloading(true);
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -82,6 +99,8 @@ const RegistrationForm = ({ navigation }) => {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      setbtnloading(false);
+      ToastAndroid.show("Image Uploaded", ToastAndroid.SHORT);
     }
   };
 
@@ -110,6 +129,7 @@ const RegistrationForm = ({ navigation }) => {
   // console.log("document id", docId);
 
   const uploadImagePath = async () => {
+    setactivityIndicate(true);
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.onload = function () {
@@ -145,22 +165,28 @@ const RegistrationForm = ({ navigation }) => {
         resturantArea: resturantArea,
         foodType: foodType,
         docId: docId,
-      });
-      getUserData({
-        fname: loginUserData.fname,
-        lname: loginUserData.lname,
-        email: loginUserData.email,
-        ResturantImage: url,
-        registerUserId: loginUserData.registerUserId,
-        registrationType: "seller",
-        registrationCompleted: true,
-        resturantName: resturantName,
-        resturantArea: resturantArea,
-        foodType: foodType,
-        docId: docId,
-      });
-      navigation.navigate("ResturantmainScreen");
-      console.log("done ho gya ga gorm");
+      })
+        .then(() => {
+          setbtnloading(false);
+          getUserData({
+            fname: loginUserData.fname,
+            lname: loginUserData.lname,
+            email: loginUserData.email,
+            ResturantImage: url,
+            registerUserId: loginUserData.registerUserId,
+            registrationType: "seller",
+            registrationCompleted: true,
+            resturantName: resturantName,
+            resturantArea: resturantArea,
+            foodType: foodType,
+            docId: docId,
+          });
+        })
+        .then(() => {
+          setactivityIndicate(false);
+          navigation.navigate("ResturantmainScreen");
+          console.log("done ho gya ga gorm");
+        });
     });
   };
   // console.log();
@@ -286,6 +312,7 @@ const RegistrationForm = ({ navigation }) => {
               alignItems: "center",
               fontWeight: "bold",
             }}
+            loadingBoleanValue={btnloading}
           />
           <ButtonComp
             btnValue="GO TO DASHBOARD"

@@ -53,7 +53,7 @@ const LoginComp = ({ navigation }) => {
               // console.log(doc.id, " => ", doc.data());
               getUserData(doc.data());
               if (doc.data().registrationCompleted === true) {
-                ToastAndroid.show("Login Sucefully", ToastAndroid.LONG);
+                ToastAndroid.show("Login Sucefully", ToastAndroid.SHORT);
                 navigation.navigate("ResturantmainScreen");
                 // console.log("true condition matched");
                 setBtnLoader(false);
@@ -61,7 +61,7 @@ const LoginComp = ({ navigation }) => {
                 setPassword(" ");
               } else {
                 navigation.navigate("ResturantRegistrationForm");
-                ToastAndroid.show("Login Sucefully", ToastAndroid.LONG);
+                ToastAndroid.show("Login Sucefully", ToastAndroid.SHORT);
                 // console.log("go to seller home page");
                 // console.log("another condition matched");
                 setBtnLoader(false);

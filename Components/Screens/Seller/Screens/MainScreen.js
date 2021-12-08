@@ -25,14 +25,12 @@ const MainScreen = ({ navigation }) => {
   const [userData, setuserData] = useState(true);
 
   useEffect(async () => {
-    if (user === null) {
-      navigation.navigate("ResturantLogin");
-    } else if (user && userLoginData.registrationCompleted === false) {
-      navigation.navigate("ResturantRegistrationForm");
+    if (user) {
+      console.log("use LOGin ha");
     } else {
-      setloader(false);
+      navigation.navigate("ResturantLogin");
     }
-  }, [userLoginData.registrationCompleted == true]);
+  }, [userLoginData]);
   const Tab = createMaterialBottomTabNavigator();
 
   return (
@@ -43,71 +41,53 @@ const MainScreen = ({ navigation }) => {
       barStyle={{ backgroundColor: "#cf0662" }}
       tabBarStyle={{ height: 80 }}
     >
-      {loader ? (
-        <Tab.Screen
-          name="loader"
-          children={() => {
-            return (
-              <ActivityIndicator
-                animating={true}
-                color="red"
-                size="large"
-                style={{ justifyContent: "center", alignItems: "center" }}
-              />
-            );
-          }}
-        />
-      ) : (
-        <>
-          <Tab.Screen
-            name="NewOrders"
-            component={NewOrders}
-            options={{
-              tabBarLabel: "UserProfile",
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons
-                  name="bell-circle"
-                  color="white"
-                  size={26}
-                />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="AddNewDish"
-            component={AddNewDish}
-            options={{
-              tabBarLabel: "Add New Dish",
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons
-                  name="plus-circle"
-                  color="white"
-                  size={26}
-                />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="UserComp"
-            children={() => {
-              return <UserComp navigation={navigation} />;
-            }}
-            // component={() => {
-            //   return <UserComp navigation={navigation} />;
-            // }}
-            options={{
-              tabBarLabel: "UserProfile",
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons
-                  name="account-circle"
-                  color="white"
-                  size={26}
-                />
-              ),
-            }}
-          />
-        </>
-      )}
+      <Tab.Screen
+        name="NewOrders"
+        component={NewOrders}
+        options={{
+          tabBarLabel: "UserProfile",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="bell-circle"
+              color="white"
+              size={26}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="AddNewDish"
+        component={AddNewDish}
+        options={{
+          tabBarLabel: "Add New Dish",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="plus-circle"
+              color="white"
+              size={26}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="UserComp"
+        children={() => {
+          return <UserComp navigation={navigation} />;
+        }}
+        // component={() => {
+        //   return <UserComp navigation={navigation} />;
+        // }}
+        options={{
+          tabBarLabel: "UserProfile",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="account-circle"
+              color="white"
+              size={26}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };

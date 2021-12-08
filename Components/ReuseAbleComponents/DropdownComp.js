@@ -9,7 +9,7 @@ const DropdownComp = ({
   valueB,
 }) => {
   return (
-    <View style={{ marginVertical: 6 }}>
+    <View style={{ marginVertical: 6, width: "70%" }}>
       <Text
         style={{
           fontSize: 18,
@@ -21,9 +21,7 @@ const DropdownComp = ({
       >
         SELECT FOOD TYPE
       </Text>
-      <View
-        style={{ borderWidth: 2, borderColor: "#D3D3D3", borderRadius: 5 }}
-      >
+      <View style={{ borderWidth: 2, borderColor: "#D3D3D3", borderRadius: 5 }}>
         <Picker
           selectedValue={selectedLanguage}
           onValueChange={pickDropdownvalue}

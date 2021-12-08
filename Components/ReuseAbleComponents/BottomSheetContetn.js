@@ -22,7 +22,12 @@ const BottomSheetContetn = (props) => {
       {props.props.checkUri ? (
         <>
           <Text
-            style={{ textAlign: "center", color: "#cf0662", fontWeight: "bold",fontSize:20 }}
+            style={{
+              textAlign: "center",
+              color: "#cf0662",
+              fontWeight: "bold",
+              fontSize: 20,
+            }}
           >
             UPDATE YOUR PROFILE MAGE
           </Text>
@@ -63,18 +68,24 @@ const BottomSheetContetn = (props) => {
       ) : (
         <>
           <Text
-            style={{ textAlign: "center", color: "#cf0662", fontWeight: "bold",fontSize:20 }}
+            style={{
+              textAlign: "center",
+              color: "#cf0662",
+              fontWeight: "bold",
+              fontSize: 20,
+            }}
           >
             UPDATE YOUR PROFILE MAGE
           </Text>
           <ButtonComp
             btnIcon="camera"
             btnColr="white"
-            btnValue="Take A Snap"
+            btnValue="Get From Gallery "
             btnStructure="contained"
             btnStyle={{
               width: "80%",
               backgroundColor: "#cf0662",
+              color: "white",
               height: 40,
               justifyContent: "center",
               alignItems: "center",
@@ -86,7 +97,7 @@ const BottomSheetContetn = (props) => {
           <ButtonComp
             btnIcon="camera"
             btnColr="white"
-            btnValue="Get From Gallery"
+            btnValue="Take A Snap"
             btnStructure="contained"
             btnStyle={{
               width: "80%",

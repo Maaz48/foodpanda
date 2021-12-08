@@ -11,6 +11,7 @@ const InputFieldComp = ({
   borderColor,
   outlineClr,
   inputStateDisable,
+  keyboardType,
 }) => {
   return (
     <TextInput
@@ -23,6 +24,7 @@ const InputFieldComp = ({
       outlineColor={outlineClr}
       style={{ marginVertical: 5, height: 45 }}
       editable={inputStateDisable}
+      keyboardType={keyboardType}
     />
   );
 };

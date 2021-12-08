@@ -51,7 +51,7 @@ const UserComp = ({ navigation }) => {
   const logOut = () => {
     signOut(auth)
       .then(() => {
-        ToastAndroid.show("Logout Successfully", ToastAndroid.LONG);
+        ToastAndroid.show("Logout Successfully", ToastAndroid.SHORT);
         // Sign-out successful.
         navigation.navigate("ResturantLogin");
         // console.log("ho gya logout");
@@ -60,6 +60,15 @@ const UserComp = ({ navigation }) => {
         // An error happened.
       });
   };
+  useEffect(() => {
+    const unsub = onSnapshot(
+      doc(db, "Registration", userLoginData.docId),
+      (doc) => {
+        console.log("Current data: ", doc.data());
+        setprofileImage(doc.data().profileImage);
+      }
+    );
+  }, [onSnapshot]);
 
   // if (uri !== " ") {
   //   changeProfileImage;
@@ -125,13 +134,17 @@ const UserComp = ({ navigation }) => {
     return await getDownloadURL(fileRef).then(async (url) => {
       console.log("got url", userLoginData.docId, url);
       const washingtonRef = doc(db, "Registration", userLoginData.docId);
-      console.log("URL KA BAAD YE WALA CONSOLE HA");
+      console.log("URL KA BAAD YE WALA CONSOLE HA", userLoginData.docId);
       // Set the "capital" field of the city 'DC'
       await updateDoc(washingtonRef, {
         profileImage: url,
-      }).catch((err) => {
-        console.log("firebase error", err);
-      });
+      })
+        .then(() => {
+          setcheckUri(false);
+        })
+        .catch((err) => {
+          console.log("firebase error", err);
+        });
     });
   };
 
@@ -277,6 +290,7 @@ const UserComp = ({ navigation }) => {
           return <BottomSheetContetn props={props} />;
         }}
         enabledContentTapInteraction={false}
+        enabledBottomClamp={false}
         // children={() => {
         //   return <BottomSheetContetn props={props} />;
         // }}

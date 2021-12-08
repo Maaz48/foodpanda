@@ -28,13 +28,13 @@ const NavigationComp = () => {
       initialRouteName="SignupComp"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="ResturantmainScreen" component={MainScreen} />
+      <Stack.Screen name="ResturantLogin" component={LoginComp} />
+      <Stack.Screen name="ResturantSignup" component={SignupComp} />
       <Stack.Screen
         name="ResturantRegistrationForm"
         component={RegistrationForm}
       />
-      <Stack.Screen name="ResturantLogin" component={LoginComp} />
-      <Stack.Screen name="ResturantSignup" component={SignupComp} />
+      <Stack.Screen name="ResturantmainScreen" component={MainScreen} />
     </Stack.Navigator>
   );
 };
